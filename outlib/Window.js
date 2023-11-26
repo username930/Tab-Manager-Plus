@@ -345,31 +345,33 @@ Window = function (_React$Component) {_inherits(Window, _React$Component);
 							for (var i = 0; i < tabs.length; i++) {
 								if (!!tabs[i].props && !!tabs[i].props.tab && !!tabs[i].props.tab.url) {
 									var url = new URL(tabs[i].props.tab.url);
-									var protocol = url.protocol;
-									var hostname = url.hostname;
-									if (protocol.indexOf("chrome-extension") > -1) {
-										hostname = tabs[i].props.tab.title;
-									} else if (protocol.indexOf("about") > -1) {
-										hostname = tabs[i].props.tab.title;
-									} else if (hostname.indexOf("mail.google") > -1) {
-										hostname = "gmail";
-									} else {
-										hostname = hostname.replace("www.", "");
-										var regex_var = new RegExp(/(\.[^\.]{0,2})(\.[^\.]{0,2})(\.*$)|(\.[^\.]*)(\.*$)/);
-										hostname = hostname.
-										replace(regex_var, "").
-										split(".").
-										pop();
-									}
-									if (hostname.length > 18) {
-										hostname = tabs[i].props.tab.title;
-										while (hostname.length > 18 && hostname.indexOf(" ") > -1) {
-											hostname = hostname.split(" ");
-											hostname.pop();
-											hostname = hostname.join(" ");
+									if (!!url.hostname) {
+										var protocol = url.protocol;
+										var hostname = url.hostname;
+										if (protocol.indexOf("chrome-extension") > -1) {
+											hostname = tabs[i].props.tab.title;
+										} else if (protocol.indexOf("about") > -1) {
+											hostname = tabs[i].props.tab.title;
+										} else if (hostname.indexOf("mail.google") > -1) {
+											hostname = "gmail";
+										} else {
+											hostname = hostname.replace("www.", "");
+											var regex_var = new RegExp(/(\.[^\.]{0,2})(\.[^\.]{0,2})(\.*$)|(\.[^\.]*)(\.*$)/);
+											hostname = hostname.
+											replace(regex_var, "").
+											split(".").
+											pop();
 										}
+										if (hostname.length > 18) {
+											hostname = tabs[i].props.tab.title;
+											while (hostname.length > 18 && hostname.indexOf(" ") > -1) {
+												hostname = hostname.split(" ");
+												hostname.pop();
+												hostname = hostname.join(" ");
+											}
+										}
+										this.state.windowTitles.push(hostname);
 									}
-									this.state.windowTitles.push(hostname);
 								}
 							}
 						}
